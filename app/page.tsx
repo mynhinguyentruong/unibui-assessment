@@ -1,6 +1,13 @@
 import { TestComponent } from "@/components/test-component";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getJobPostings, Job } from "@/lib/get-job-postings";
 
 export default function Home() {
-  return <TestComponent />;
+  const jobs: Job[] = getJobPostings();
+  console.log("ASdasjdasjd");
+  console.log({ jobs });
+  console.log({ jobs });
+  console.log({ jobs });
+  console.log({ jobs });
+  console.log({ jobs });
+  return <TestComponent jobs={jobs} />;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import SVG from "@/public/placeholder.svg";
+import type { Job } from "@/lib/get-job-postings";
 import Logo from "@/public/unibui.png";
 import { useState } from "react";
 import Link from "next/link";
@@ -13,7 +13,6 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CommandDemo } from "./command-demo";
@@ -21,20 +20,21 @@ import { SearchMenu } from "./search-menu";
 // import { Combobox } from "@/components/combobox";
 import {
   MagnifyingGlassIcon,
+  BookmarkFilledIcon,
   BookmarkIcon,
   LightningBoltIcon,
 } from "@radix-ui/react-icons";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-type Job = {
-  id: string;
-  job_title: string;
-  company_name: string;
-  location: string;
-  job_description: string;
-  requirements: string[];
-};
+// type Job = {
+//   id: string;
+//   job_title: string;
+//   company_name: string;
+//   location: string;
+//   job_description: string;
+//   requirements: string[];
+// };
 
 const mockJobs: Job[] = [
   {
@@ -44,13 +44,7 @@ const mockJobs: Job[] = [
     location: "San Francisco, CA",
     job_description:
       "Develop and maintain software applications using modern frameworks and tools.",
-    requirements: [
-      "Bachelor’s degree in Computer Science or related field",
-      "3+ years of experience in software development",
-      "Proficiency in JavaScript, HTML, CSS",
-      "Experience with React or Angular",
-      "Strong problem-solving skills",
-    ],
+    requirements: "Bachelor’s degree in Computer Science or related field",
   },
   {
     id: "2",
@@ -59,13 +53,8 @@ const mockJobs: Job[] = [
     location: "New York, NY",
     job_description:
       "Analyze and interpret complex data sets to help inform business decisions.",
-    requirements: [
+    requirements:
       "Master’s degree in Data Science, Statistics, or related field",
-      "2+ years of experience in data analysis",
-      "Proficiency in Python and R",
-      "Experience with machine learning algorithms",
-      "Strong analytical and critical thinking skills",
-    ],
   },
   {
     id: "3",
@@ -74,13 +63,8 @@ const mockJobs: Job[] = [
     location: "Austin, TX",
     job_description:
       "Oversee the development and delivery of technology products from conception to launch.",
-    requirements: [
+    requirements:
       "Bachelor’s degree in Business, Engineering, or related field",
-      "5+ years of experience in product management",
-      "Experience with Agile methodologies",
-      "Strong communication and leadership skills",
-      "Ability to work cross-functionally with engineering, marketing, and sales teams",
-    ],
   },
   {
     id: "4",
@@ -89,13 +73,7 @@ const mockJobs: Job[] = [
     location: "Los Angeles, CA",
     job_description:
       "Design intuitive and engaging user interfaces for web and mobile applications.",
-    requirements: [
-      "Bachelor’s degree in Design, HCI, or related field",
-      "4+ years of experience in UX design",
-      "Proficiency in design tools like Sketch, Figma, or Adobe XD",
-      "Strong portfolio showcasing design projects",
-      "Excellent visual and communication skills",
-    ],
+    requirements: "Bachelor’s degree in Design, HCI, or related field",
   },
   {
     id: "5",
@@ -104,17 +82,11 @@ const mockJobs: Job[] = [
     location: "Remote",
     job_description:
       "Develop and execute marketing strategies to increase brand awareness and drive sales.",
-    requirements: [
-      "Bachelor’s degree in Marketing, Business, or related field",
-      "3+ years of experience in marketing",
-      "Proficiency in digital marketing tools and platforms",
-      "Experience with SEO, SEM, and social media marketing",
-      "Strong analytical and project management skills",
-    ],
+    requirements: "Bachelor’s degree in Marketing, Business, or related field",
   },
 ];
 
-export function TestComponent() {
+export function TestComponent({ jobs }: { jobs: Job[] }) {
   // const [savedJobs, setSavedJobs] = useState([]);
   // const handleSaveJob = (job) => {
   //   if (!savedJobs.some((j) => j.id === job.id)) {
@@ -123,19 +95,39 @@ export function TestComponent() {
   //   }
   // };
 
-  const handleSaveJob = (job: Job): void => {
-    // Retrieve the current saved jobs from local storage
+  const [savedJobs, setSavedJobs] = useState<Set<string>>(() => {
     const savedJobsJSON = localStorage.getItem("savedJobs");
-    const savedJobs: Set<string> = savedJobsJSON
-      ? new Set(JSON.parse(savedJobsJSON))
-      : new Set();
+    return savedJobsJSON ? new Set(JSON.parse(savedJobsJSON)) : new Set();
+  });
 
+  const handleSaveJob = (job: Job): void => {
     // Add the new job ID to the set
-    savedJobs.add(job.id);
+    const newSavedJobs = new Set(savedJobs);
+    newSavedJobs.add(job.id);
 
     // Save the updated set back to local storage
-    localStorage.setItem("savedJobs", JSON.stringify(Array.from(savedJobs)));
+    localStorage.setItem("savedJobs", JSON.stringify(Array.from(newSavedJobs)));
+
+    // Update the state
+    setSavedJobs(newSavedJobs);
   };
+
+  const handleUnsaveJob = (id: string): void => {
+    // Remove the job ID from the set
+    const newSavedJobs = new Set(savedJobs);
+    newSavedJobs.delete(id);
+
+    // Save the updated set back to local storage
+    localStorage.setItem("savedJobs", JSON.stringify(Array.from(newSavedJobs)));
+
+    // Update the state
+    setSavedJobs(newSavedJobs);
+  };
+
+  const isSaved = (id: string): boolean => {
+    return savedJobs.has(id);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-background border-b px-4 md:px-6 flex items-center h-16 shrink-0">
@@ -165,7 +157,6 @@ export function TestComponent() {
             Browse
           </TabsTrigger>
           <TabsTrigger value="password">Saved</TabsTrigger>
-          <TabsTrigger value="applied">Applied</TabsTrigger>
         </TabsList>
         <TabsContent className="min-h-screen" value="account">
           <SearchMenu />
@@ -175,21 +166,14 @@ export function TestComponent() {
                 <MagnifyingGlassIcon className="w-5 h-5 ml-1" />
                 <Input
                   type="search"
-                  placeholder="Filter jobs..."
+                  placeholder="Filter job title, company, location..."
                   className="flex-1 border-none focus:ring-0"
                 />
-                <Button className="shrink-0 hidden sm:inline-flex">
-                  Search
-                </Button>
-                <Button className="shrink-0 sm:hidden">
-                  <MagnifyingGlassIcon className="w-5 h-5" />
-                  <span className="sr-only">Search</span>
-                </Button>
               </form>
               <div className="grid gap-8">
-                {mockJobs.map((job) => (
+                {jobs.map((job) => (
                   <Card key={job.id}>
-                    <Link href={`/${job.id}`}>
+                    <Link href={`/job/${job.id}`}>
                       <CardHeader>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
@@ -231,33 +215,29 @@ export function TestComponent() {
                     </Link>
 
                     <CardFooter className="gap-3 px-6">
-                      <Button
-                        className="w-full flex items-center justify-center"
-                        onClick={() =>
-                          handleSaveJob({
-                            id: 1,
-                            title: "Senior Software Engineer",
-                            company: "Acme Inc.",
-                          })
-                        }
-                      >
+                      <Button className="w-full flex items-center justify-center">
                         <LightningBoltIcon className="mr-2 h-4 w-4" />
                         Fast Apply
                       </Button>
-                      <Button
-                        variant="outline"
-                        className="w-full "
-                        onClick={() =>
-                          handleSaveJob({
-                            id: 1,
-                            title: "Senior Software Engineer",
-                            company: "Acme Inc.",
-                          })
-                        }
-                      >
-                        <BookmarkIcon className="mr-2 h-4 w-4" />
-                        Save Job
-                      </Button>
+                      {isSaved(job.id) ? (
+                        <Button
+                          variant="outline"
+                          className="w-full "
+                          onClick={() => handleUnsaveJob(job.id)}
+                        >
+                          <BookmarkFilledIcon className="mr-2 h-4 w-4" />
+                          Saved
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          className="w-full "
+                          onClick={() => handleSaveJob(job)}
+                        >
+                          <BookmarkIcon className="mr-2 h-4 w-4" />
+                          Save Job
+                        </Button>
+                      )}
                     </CardFooter>
                   </Card>
                 ))}
@@ -265,8 +245,11 @@ export function TestComponent() {
             </div>
           </main>
         </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
-        <TabsContent value="applied">Job applied.</TabsContent>
+        <TabsContent value="password">
+          {localStorage.getItem("savedJobs")
+            ? localStorage.getItem("savedJobs")
+            : "You haven’t saved any fast apply jobs yet."}
+        </TabsContent>
       </Tabs>
 
       <footer className="bg-muted border-t px-4 md:px-6 py-6 text-sm">
