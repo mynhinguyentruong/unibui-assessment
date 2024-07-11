@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CommandDemo } from "./command-demo";
+// import { CommandDemo } from "./command-demo";
 import { SearchMenu } from "./search-menu";
 // import { Combobox } from "@/components/combobox";
 import {
@@ -24,19 +24,9 @@ import {
   BookmarkIcon,
   LightningBoltIcon,
   HamburgerMenuIcon,
-  BackpackIcon,
 } from "@radix-ui/react-icons";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-// type Job = {
-//   id: string;
-//   job_title: string;
-//   company_name: string;
-//   location: string;
-//   job_description: string;
-//   requirements: string[];
-// };
 
 const mockJobs: Job[] = [
   {
@@ -89,14 +79,6 @@ const mockJobs: Job[] = [
 ];
 
 export function TestComponent({ jobs }: { jobs: Job[] }) {
-  // const [savedJobs, setSavedJobs] = useState([]);
-  // const handleSaveJob = (job) => {
-  //   if (!savedJobs.some((j) => j.id === job.id)) {
-  //     setSavedJobs([...savedJobs, job]);
-  //     localStorage.setItem("savedJobs", JSON.stringify([...savedJobs, job]));
-  //   }
-  // };
-
   const [savedJobs, setSavedJobs] = useState<Set<string>>(() => {
     const savedJobsJSON = localStorage.getItem("savedJobs");
     return savedJobsJSON ? new Set(JSON.parse(savedJobsJSON)) : new Set();
@@ -132,27 +114,6 @@ export function TestComponent({ jobs }: { jobs: Job[] }) {
 
   return (
     <div className="w-full flex flex-col min-h-screen">
-      <header className="bg-background border-b px-4 md:px-6 flex items-center h-16 shrink-0">
-        <Link href="#" className="flex items-center gap-2 " prefetch={false}>
-          <Image src={Logo} width={90} height={90} alt="Unibui Company Logo" />
-          <span className="mt-1 p-3 text-sm italic underline underline-offset-4">
-            job board
-          </span>
-        </Link>
-        <nav className="ml-auto flex items-center gap-6 text-sm font-medium hidden md:flex">
-          <Link
-            href="/"
-            className="hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Browse Jobs
-          </Link>
-        </nav>
-        <Button variant="ghost" size="icon" className="ml-auto md:hidden">
-          <HamburgerMenuIcon className="w-6 h-6" />
-          <span className="sr-only">Toggle menu</span>
-        </Button>
-      </header>
       <Tabs defaultValue="account" className="m-6">
         <TabsList className="gap-9 mb-4 ">
           <TabsTrigger className="text-left" value="account">
@@ -333,76 +294,6 @@ export function TestComponent({ jobs }: { jobs: Job[] }) {
           </div>
         </TabsContent>
       </Tabs>
-
-      <footer className="bg-muted border-t px-4 md:px-6 py-6 text-sm">
-        <div className="flex flex-col items-start justify-between gap-4">
-          <div className="w-full flex justify-between  ">
-            <Link
-              href="#"
-              className="flex items-center gap-2 "
-              prefetch={false}
-            >
-              <Image
-                src={Logo}
-                width={90}
-                height={90}
-                alt="Unibui Company Logo"
-              />
-              <span className="mt-1 p-3 text-sm italic underline underline-offset-4">
-                job board
-              </span>
-            </Link>
-
-            <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-2">
-              <Link
-                href="#"
-                className="hover:underline underline-offset-4"
-                prefetch={false}
-              >
-                Browse Jobs
-              </Link>
-              <Link
-                href="#"
-                className="hover:underline underline-offset-4"
-                prefetch={false}
-              >
-                Post a Job
-              </Link>
-              <Link
-                href="#"
-                className="hover:underline underline-offset-4"
-                prefetch={false}
-              >
-                Employers
-              </Link>
-              <Link
-                href="#"
-                className="hover:underline underline-offset-4"
-                prefetch={false}
-              >
-                About
-              </Link>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 text-muted-foreground">
-            <Link
-              href="#"
-              className="hover:underline underline-offset-4"
-              prefetch={false}
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="#"
-              className="hover:underline underline-offset-4"
-              prefetch={false}
-            >
-              Terms of Service
-            </Link>
-            <div>&copy; 2024 Unibui. All rights reserved.</div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

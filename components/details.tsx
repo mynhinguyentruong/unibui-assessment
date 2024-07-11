@@ -59,50 +59,6 @@ export default function Details({ job }: { job: Job }) {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-background border-b px-4 md:px-6 flex items-center h-16 shrink-0">
-        <Link
-          href="#"
-          className="flex items-center gap-2 text-lg font-semibold"
-          prefetch={false}
-        >
-          <BriefcaseIcon className="w-6 h-6" />
-          <span>Job Board</span>
-        </Link>
-        <nav className="ml-auto flex items-center gap-6 text-sm font-medium hidden md:flex">
-          <Link
-            href="#"
-            className="hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Browse Jobs
-          </Link>
-          <Link
-            href="#"
-            className="hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Post a Job
-          </Link>
-          <Link
-            href="#"
-            className="hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Employers
-          </Link>
-          <Link
-            href="#"
-            className="hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            About
-          </Link>
-        </nav>
-        <Button variant="ghost" size="icon" className="ml-auto md:hidden">
-          <MenuIcon className="w-6 h-6" />
-          <span className="sr-only">Toggle menu</span>
-        </Button>
-      </header>
       <main className="flex-1 py-8 px-4 md:px-6">
         <div className="max-w-3xl mx-auto">
           <div className="bg-background border rounded-sm p-6 md:p-8">
