@@ -32,7 +32,7 @@ export function SearchMenu() {
     <>
       <Button
         variant="outline"
-        className="border border-input bg-muted "
+        className="max-w-3xl border border-input bg-muted "
         onClick={() => setOpen(true)}
       >
         <p className="text-xs font-normal text-muted-foreground tracking-wide  transition-colors hover:bg-accent hover:text-accent-foreground ">
