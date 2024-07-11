@@ -1,3 +1,8 @@
+import Details from "@/components/details";
+import { getJobDetails } from "@/lib/get-job-postings";
+
 export default function Page({ params }: { params: { id: string } }) {
-  return <div>My Post: {params.id}</div>;
+  const job = getJobDetails(params.id);
+
+  return <Details job={job} />;
 }
