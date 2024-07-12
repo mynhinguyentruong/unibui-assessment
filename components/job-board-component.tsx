@@ -25,7 +25,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function JobBoardComponent({ jobs }: { jobs: Job[] }) {
   const [savedJobs, setSavedJobs] = useState<Set<string>>(() => {
-    const savedJobsJSON = localStorage?.getItem("savedJobs");
+    let savedJobsJSON;
+
+    if (typeof window !== "undefined") {
+      savedJobsJSON = localStorage.getItem("savedJobs");
+    }
+
     return savedJobsJSON ? new Set(JSON.parse(savedJobsJSON)) : new Set();
   });
   const [filterInput, setFilterInput] = useState<string>("");
@@ -103,9 +108,11 @@ export function JobBoardComponent({ jobs }: { jobs: Job[] }) {
                   value={filterInput}
                   onChange={(e) => handleUserInput(e)}
                 />
-                <Button onClick={() => setFilterInput("")} variant="outline">
-                  Clear filter
-                </Button>
+                {filterInput && (
+                  <Button onClick={() => setFilterInput("")} variant="outline">
+                    Clear filter
+                  </Button>
+                )}
               </form>
               <div className="grid gap-8">
                 {filteredJobs.map((job) => (

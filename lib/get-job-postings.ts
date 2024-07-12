@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
 import { cache } from "react";
+import Error from "@/app/job/[id]/error";
 
 export type Job = {
   id: string;
@@ -12,13 +13,22 @@ export type Job = {
   requirements: string;
 };
 
-export const getJobPostings = cache((): Job[] => {
+type JobCSV = {
+  ID: string;
+  "Job Title": string;
+  "Company Name": string;
+  Location: string;
+  "Job Description": string;
+  Requirements: string;
+};
+
+export const getJobPostings = cache((): (Job | undefined)[] => {
   const filePath = path.join(process.cwd(), "public", "jobswithid.csv");
   const fileContent = fs.readFileSync(filePath, "utf8");
 
-  const parsedData: Job[] | undefined = Papa.parse(fileContent, {
+  const parsedData: (Job | undefined)[] = Papa.parse<JobCSV>(fileContent, {
     header: true,
-  }).data.map((job: any) => {
+  }).data.map((job: JobCSV) => {
     if (job["Job Title"]) {
       return {
         id: job["ID"],
@@ -31,14 +41,14 @@ export const getJobPostings = cache((): Job[] => {
     }
   });
 
-  if (!parsedData) {
-    throw new Error("Failed to parse job postings data from CSV file.");
-  }
+  // if (!parsedData) {
+  //   throw new Error("Failed to parse job postings data from CSV file.");
+  // }
   return parsedData;
 });
 
-export const getJobDetails = cache((id: string): Job => {
-  const job = getJobPostings().find((job) => job.id === id);
+export const getJobDetails = cache((id: string): Job | undefined => {
+  const job = getJobPostings()?.find((job) => job?.id === id);
 
   return job;
 });

@@ -25,11 +25,7 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen">
           <div className="flex-1">
             <header className=" bg-background border-b px-4 md:px-6 flex items-center h-16 shrink-0">
-              <Link
-                href="#"
-                className="flex items-center gap-2 "
-                prefetch={false}
-              >
+              <Link href="/" className="flex items-center gap-2 ">
                 <Image
                   src={Logo}
                   width={90}
@@ -41,11 +37,7 @@ export default function RootLayout({
                 </span>
               </Link>
               <nav className="ml-auto flex items-center gap-6 text-sm font-medium hidden md:flex">
-                <Link
-                  href="/"
-                  className="hover:underline underline-offset-4"
-                  prefetch={false}
-                >
+                <Link href="/" className="hover:underline underline-offset-4">
                   Browse Jobs
                 </Link>
               </nav>
@@ -60,11 +52,7 @@ export default function RootLayout({
           <footer className="bg-muted border-t px-4 md:px-6 py-6 text-sm">
             <div className="flex flex-col items-start justify-between gap-4">
               <div className="w-full flex justify-between  ">
-                <Link
-                  href="#"
-                  className="flex items-center gap-2 "
-                  prefetch={false}
-                >
+                <Link href="/" className="flex items-center gap-2 ">
                   <Image
                     src={Logo}
                     width={90}
@@ -77,49 +65,25 @@ export default function RootLayout({
                 </Link>
 
                 <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-2">
-                  <Link
-                    href="#"
-                    className="hover:underline underline-offset-4"
-                    prefetch={false}
-                  >
+                  <Link href="#" className="hover:underline underline-offset-4">
                     Browse Jobs
                   </Link>
-                  <Link
-                    href="#"
-                    className="hover:underline underline-offset-4"
-                    prefetch={false}
-                  >
+                  <Link href="/" className="hover:underline underline-offset-4">
                     Post a Job
                   </Link>
-                  <Link
-                    href="#"
-                    className="hover:underline underline-offset-4"
-                    prefetch={false}
-                  >
+                  <Link href="#" className="hover:underline underline-offset-4">
                     Employers
                   </Link>
-                  <Link
-                    href="#"
-                    className="hover:underline underline-offset-4"
-                    prefetch={false}
-                  >
+                  <Link href="#" className="hover:underline underline-offset-4">
                     About
                   </Link>
                 </div>
               </div>
               <div className="flex items-center gap-4 text-muted-foreground">
-                <Link
-                  href="#"
-                  className="hover:underline underline-offset-4"
-                  prefetch={false}
-                >
+                <Link href="#" className="hover:underline underline-offset-4">
                   Privacy Policy
                 </Link>
-                <Link
-                  href="#"
-                  className="hover:underline underline-offset-4"
-                  prefetch={false}
-                >
+                <Link href="#" className="hover:underline underline-offset-4">
                   Terms of Service
                 </Link>
                 <div>&copy; 2024 Unibui. All rights reserved.</div>
