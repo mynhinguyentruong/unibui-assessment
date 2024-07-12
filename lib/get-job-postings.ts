@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
-import { v4 as uuidv4 } from "uuid";
 import { cache } from "react";
 
 export type Job = {
@@ -40,5 +39,6 @@ export const getJobPostings = cache((): Job[] => {
 
 export const getJobDetails = cache((id: string): Job => {
   const job = getJobPostings().find((job) => job.id === id);
+
   return job;
 });

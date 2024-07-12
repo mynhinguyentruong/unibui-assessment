@@ -1,10 +1,8 @@
 "use client";
 
 import type { Job } from "@/lib/get-job-postings";
-import Logo from "@/public/unibui.png";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,74 +13,41 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import { CommandDemo } from "./command-demo";
-import { SearchMenu } from "./search-menu";
-// import { Combobox } from "@/components/combobox";
+import { SearchMenu } from "@/components/search-menu";
 import {
   MagnifyingGlassIcon,
   BookmarkFilledIcon,
   BookmarkIcon,
   LightningBoltIcon,
-  HamburgerMenuIcon,
 } from "@radix-ui/react-icons";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const mockJobs: Job[] = [
-  {
-    id: "1",
-    job_title: "Software Engineer",
-    company_name: "Tech Innovators Inc.",
-    location: "San Francisco, CA",
-    job_description:
-      "Develop and maintain software applications using modern frameworks and tools.",
-    requirements: "Bachelor’s degree in Computer Science or related field",
-  },
-  {
-    id: "2",
-    job_title: "Data Scientist",
-    company_name: "Data Solutions Ltd.",
-    location: "New York, NY",
-    job_description:
-      "Analyze and interpret complex data sets to help inform business decisions.",
-    requirements:
-      "Master’s degree in Data Science, Statistics, or related field",
-  },
-  {
-    id: "3",
-    job_title: "Product Manager",
-    company_name: "Innovatech",
-    location: "Austin, TX",
-    job_description:
-      "Oversee the development and delivery of technology products from conception to launch.",
-    requirements:
-      "Bachelor’s degree in Business, Engineering, or related field",
-  },
-  {
-    id: "4",
-    job_title: "UX Designer",
-    company_name: "Creative Minds Agency",
-    location: "Los Angeles, CA",
-    job_description:
-      "Design intuitive and engaging user interfaces for web and mobile applications.",
-    requirements: "Bachelor’s degree in Design, HCI, or related field",
-  },
-  {
-    id: "5",
-    job_title: "Marketing Specialist",
-    company_name: "GrowthHackers",
-    location: "Remote",
-    job_description:
-      "Develop and execute marketing strategies to increase brand awareness and drive sales.",
-    requirements: "Bachelor’s degree in Marketing, Business, or related field",
-  },
-];
-
-export function TestComponent({ jobs }: { jobs: Job[] }) {
+export function JobBoardComponent({ jobs }: { jobs: Job[] }) {
   const [savedJobs, setSavedJobs] = useState<Set<string>>(() => {
-    const savedJobsJSON = localStorage.getItem("savedJobs");
+    const savedJobsJSON = localStorage?.getItem("savedJobs");
     return savedJobsJSON ? new Set(JSON.parse(savedJobsJSON)) : new Set();
   });
+  const [filterInput, setFilterInput] = useState<string>("");
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>(jobs);
+
+  useEffect(() => {
+    updateUIWithFilteredKeywords(filterInput);
+  }, [filterInput]);
+
+  const updateUIWithFilteredKeywords = (input: string) => {
+    const lowercasedFilter = input.toLowerCase();
+    const filteredData = jobs.filter((job) => {
+      return (
+        job.job_title.toLowerCase().includes(lowercasedFilter) ||
+        job.company_name.toLowerCase().includes(lowercasedFilter) ||
+        job.location.toLowerCase().includes(lowercasedFilter) ||
+        job.job_description.toLowerCase().includes(lowercasedFilter) ||
+        job.requirements.toLowerCase().includes(lowercasedFilter)
+      );
+    });
+    setFilteredJobs(filteredData);
+  };
 
   const handleSaveJob = (job: Job): void => {
     // Add the new job ID to the set
@@ -112,6 +77,10 @@ export function TestComponent({ jobs }: { jobs: Job[] }) {
     return savedJobs.has(id);
   };
 
+  const handleUserInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilterInput(e.target.value);
+  };
+
   return (
     <div className="w-full flex flex-col min-h-screen">
       <Tabs defaultValue="account" className="m-6">
@@ -131,10 +100,15 @@ export function TestComponent({ jobs }: { jobs: Job[] }) {
                   type="search"
                   placeholder="Filter job title, company, location..."
                   className="flex-1 border-none focus:ring-0"
+                  value={filterInput}
+                  onChange={(e) => handleUserInput(e)}
                 />
+                <Button onClick={() => setFilterInput("")} variant="outline">
+                  Clear filter
+                </Button>
               </form>
               <div className="grid gap-8">
-                {jobs.map((job) => (
+                {filteredJobs.map((job) => (
                   <Card key={job.id}>
                     <Link href={`/job/${job.id}`}>
                       <CardHeader>
