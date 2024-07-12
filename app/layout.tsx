@@ -49,7 +49,7 @@ export default function RootLayout({
 
             {children}
           </div>
-          <footer className="bg-muted border-t px-4 md:px-6 py-6 text-sm">
+          <footer className="flex-1 w-full bg-muted border-t px-4 md:px-6 py-6 text-sm">
             <div className="flex flex-col items-start justify-between gap-4">
               <div className="w-full flex justify-between  ">
                 <Link href="/" className="flex items-center gap-2 ">

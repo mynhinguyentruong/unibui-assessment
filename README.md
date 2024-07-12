@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Unibui Assignment
 
-## Getting Started
+### Explanation and Thought Process
 
-First, run the development server:
+**CSV File Enhancement:**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The provided CSV file did not contain an ID for each row, which is essential for efficiently handling and referencing job listings within the application. To address this, I generated a unique ID for each row. This decision was driven by the need to:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Ensure each job listing can be uniquely identified and accessed.
+- Facilitate CRUD (Create, Read, Update, Delete) operations on the job listings.
+- Improve data integrity and reduce the likelihood of duplicate entries.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Utilizing Screen Real Estate:**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+As I discussed in the video, there was a significant amount of unused white space on the right side of the job listings. To make better use of this space and enhance the user experience, I proposed rendering the student profile in this area. This design choice was motivated by several factors:
 
-## Learn More
+- Providing quick access to the student profile allows users to easily switch preferences for job types, making the application more interactive and user-friendly.
+- Leveraging the white space effectively helps in creating a balanced and visually appealing layout.
 
-To learn more about Next.js, take a look at the following resources:
+**Technology Stack and Trade-offs:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application is built using a full stack Next.js framework with static site generation (SSG) for the job listing page and job details page. Here’s a breakdown of the thought process and trade-offs involved in this choice:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. **Performance:**
 
-## Deploy on Vercel
+   - **Benefit:** Static site generation ensures that the job listing and job details pages are pre-rendered at build time, resulting in faster page load times and improved performance for end-users.
+   - **Trade-off:** Changes to job listings require a rebuild of the static pages, which can introduce a slight delay in reflecting updates. This was deemed acceptable given the performance benefits for users.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **SEO (Search Engine Optimization):**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   - **Benefit:** SSG enhances SEO as the content is available at build time and can be easily indexed by search engines, improving the visibility of job listings.
+   - **Trade-off:** For dynamic content that changes frequently, we might need to incorporate Incremental Static Regeneration (ISR) or a hybrid approach to ensure updates are efficiently handled.
+
+3. **Scalability:**
+
+   - **Benefit:** By using Next.js and SSG, the application can handle a large number of concurrent users with minimal server load, as most of the content is served as static files.
+   - **Trade-off:** Initial setup and build processes can be more complex, requiring careful planning and configuration to ensure optimal performance and scalability.
+
+4. **Development Efficiency:**
+
+   - **Benefit:** Next.js provides a robust framework with built-in support for routing, API integration, and static generation, which accelerates development and reduces the need for boilerplate code.
+   - **Trade-off:** The learning curve for developers unfamiliar with Next.js or React can be steeper, but the long-term gains in productivity and maintainability outweigh this initial investment.
+
+5. **Static File vs. Database Integration:**
+   - **Decision:** Because we are reading from a static file, I did not apply asynchronous features in Next.js that are typically used for streaming data from a database.
+   - **Explanation:** Utilizing a static file allows for quicker initial setup and simpler deployment. However, it means we forego certain dynamic features, such as rendering a loading UI with skeleton screens while fetching data asynchronously.
+   - **Trade-off:** This decision simplifies the application architecture but at the cost of not having real-time data updates and loading states. If the project scales or requires more dynamic data handling, we can transition to a database-backed approach with Next.js’s API routes and Incremental Static Regeneration (ISR).
+
+By carefully considering these factors, I aimed to create a job board application that is not only performant and user-friendly but also scalable and maintainable in the long run.

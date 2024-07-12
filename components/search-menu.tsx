@@ -1,18 +1,14 @@
 import {
-  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 
 import * as React from "react";
 import { Button } from "./ui/button";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 export function SearchMenu() {
   const [open, setOpen] = React.useState(false);
