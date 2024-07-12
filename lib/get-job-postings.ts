@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
 import { cache } from "react";
-import Error from "@/app/job/[id]/error";
 
 export type Job = {
   id: string;

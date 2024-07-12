@@ -88,14 +88,14 @@ export function JobBoardComponent({ jobs }: { jobs: Job[] }) {
 
   return (
     <div className="w-full flex flex-col min-h-screen">
-      <Tabs defaultValue="account" className="m-6">
+      <Tabs defaultValue="browse" className="m-6">
         <TabsList className="gap-9 mb-4 ">
-          <TabsTrigger className="text-left" value="account">
+          <TabsTrigger className="text-left" value="browse">
             Browse
           </TabsTrigger>
-          <TabsTrigger value="password">Saved</TabsTrigger>
+          <TabsTrigger value="saved">Saved</TabsTrigger>
         </TabsList>
-        <TabsContent className="min-h-screen" value="account">
+        <TabsContent className="min-h-screen" value="browse">
           <SearchMenu />
           <main className="flex-1 py-8 ">
             <div className="max-w-3xl ">
@@ -193,85 +193,87 @@ export function JobBoardComponent({ jobs }: { jobs: Job[] }) {
           </main>
         </TabsContent>
 
-        <TabsContent value="password">
-          <div className="max-w-3xl ">
-            {savedJobs.size > 0 ? (
-              jobs
-                .filter((job) => isSaved(job.id))
-                .map((job) => (
-                  <Card key={job.id}>
-                    <Link href={`/job/${job.id}`}>
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Avatar>
-                              <AvatarImage src="https://avatar.vercel.sh/1" />
-                              {/* vercel, nextjs, 1*/}
-                              <AvatarFallback>Company</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <div className="font-medium">
-                                {job.company_name}
-                              </div>
-                              <div className="text-sm text-muted-foreground">
-                                {job.location}
+        <TabsContent value="saved">
+          <div className="max-w-3xl">
+            <div className="grid gap-8">
+              {savedJobs.size > 0 ? (
+                jobs
+                  .filter((job) => isSaved(job.id))
+                  .map((job) => (
+                    <Card key={job.id}>
+                      <Link href={`/job/${job.id}`}>
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Avatar>
+                                <AvatarImage src="https://avatar.vercel.sh/1" />
+                                {/* vercel, nextjs, 1*/}
+                                <AvatarFallback>Company</AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <div className="font-medium">
+                                  {job.company_name}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  {job.location}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex flex-col gap-2">
-                          <h3 className="text-md font-semibold">
-                            {job.job_title}
-                          </h3>
-                          <p className="text-sm text-muted-foreground line-clamp-2">
-                            {job.job_description}
-                          </p>
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <div>$120k - $150k</div>
-                            <Separator
-                              orientation="vertical"
-                              className="hidden sm:inline-flex"
-                            />
-                            <div>3+ years experience</div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex flex-col gap-2">
+                            <h3 className="text-md font-semibold">
+                              {job.job_title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {job.job_description}
+                            </p>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <div>$120k - $150k</div>
+                              <Separator
+                                orientation="vertical"
+                                className="hidden sm:inline-flex"
+                              />
+                              <div>3+ years experience</div>
+                            </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Link>
-                    <CardFooter className="gap-3 px-6">
-                      <Button className="w-full flex items-center justify-center">
-                        <LightningBoltIcon className="mr-2 h-4 w-4" />
-                        Fast Apply
-                      </Button>
-                      {isSaved(job.id) ? (
-                        <Button
-                          variant="outline"
-                          className="w-full"
-                          onClick={() => handleUnsaveJob(job.id)}
-                        >
-                          <BookmarkFilledIcon
-                            color="blue"
-                            className="mr-2 h-4 w-4"
-                          />
-                          Saved
+                        </CardContent>
+                      </Link>
+                      <CardFooter className="gap-3 px-6">
+                        <Button className="w-full flex items-center justify-center">
+                          <LightningBoltIcon className="mr-2 h-4 w-4" />
+                          Fast Apply
                         </Button>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          className="w-full"
-                          onClick={() => handleSaveJob(job)}
-                        >
-                          <BookmarkIcon className="mr-2 h-4 w-4" />
-                          Save Job
-                        </Button>
-                      )}
-                    </CardFooter>
-                  </Card>
-                ))
-            ) : (
-              <p>You haven’t saved any fast apply jobs yet.</p>
-            )}
+                        {isSaved(job.id) ? (
+                          <Button
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => handleUnsaveJob(job.id)}
+                          >
+                            <BookmarkFilledIcon
+                              color="blue"
+                              className="mr-2 h-4 w-4"
+                            />
+                            Saved
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => handleSaveJob(job)}
+                          >
+                            <BookmarkIcon className="mr-2 h-4 w-4" />
+                            Save Job
+                          </Button>
+                        )}
+                      </CardFooter>
+                    </Card>
+                  ))
+              ) : (
+                <p>You haven’t saved any fast apply jobs yet.</p>
+              )}
+            </div>
           </div>
         </TabsContent>
       </Tabs>
