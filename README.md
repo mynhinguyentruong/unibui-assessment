@@ -1,6 +1,10 @@
-## Unibui Assignment
+# Unibui Assignment
 
-### Explanation and Thought Process
+## Introduction
+
+Welcome to the Unibui Job Board Application! This project was created as part of an assignment to demonstrate the development of a scalable, efficient, and user-friendly job board application using modern web technologies. The goal was to build an application that provides a seamless experience for users to browse, search, and manage job listings, leveraging the power of static site generation with Next.js.
+
+## Explanation and Thought Process
 
 **CSV File Enhancement:**
 
@@ -47,3 +51,57 @@ The application is built using a full stack Next.js framework with static site g
    - **Trade-off:** This decision simplifies the application architecture but at the cost of not having real-time data updates and loading states. If the project scales or requires more dynamic data handling, we can transition to a database-backed approach with Next.js’s API routes and Incremental Static Regeneration (ISR).
 
 By carefully considering these factors, I aimed to create a job board application that is not only performant and user-friendly but also scalable and maintainable in the long run.
+
+## Installation
+
+To get started with the project, follow these steps:
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/mynhinguyentruong/unibui-assessment.git
+   cd unibui-job-board
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server:**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser to see the application in action.
+
+## Usage
+
+1. **Search for Jobs:**
+   Use the search bar to filter job listings by title, company, or location.
+
+2. **View Job Details:**
+   Click on a job listing to view detailed information about the job.
+
+3. **Save/Unsave Jobs:**
+   Click the save button to save a job listing or unsave it if already saved.
+
+## Contributing
+
+Contributions are welcome! If you have any ideas, suggestions, or bug fixes, please create a pull request or open an issue.
+
+1. **Fork the repository**
+2. **Create a new branch:**
+   ```bash
+   git checkout -b feature-name
+   ```
+3. **Commit your changes:**
+   ```bash
+   git commit -m 'Add some feature'
+   ```
+4. **Push to the branch:**
+   ```bash
+   git push origin feature-name
+   ```
