@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Logo from "@/public/unibui.png";
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,74 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen">
-          <div className="flex-1">
-            <header className=" bg-background border-b px-4 md:px-6 flex items-center h-16 shrink-0">
-              <Link href="/" className="flex items-center gap-2 ">
-                <Image
-                  src={Logo}
-                  width={90}
-                  height={90}
-                  alt="Unibui Company Logo"
-                />
-                <span className="mt-1 p-3 text-sm italic underline underline-offset-4">
-                  job board
-                </span>
-              </Link>
-              <nav className="ml-auto flex items-center gap-6 text-sm font-medium hidden md:flex">
-                <Link href="/" className="hover:underline underline-offset-4">
-                  Browse Jobs
-                </Link>
-              </nav>
-              <Button variant="ghost" size="icon" className="ml-auto md:hidden">
-                <HamburgerMenuIcon className="w-6 h-6" />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </header>
-
-            {children}
-          </div>
-          <footer className="flex-1 w-full bg-muted border-t px-4 md:px-6 py-6 text-sm">
-            <div className="flex flex-col items-start justify-between gap-4">
-              <div className="w-full flex justify-between  ">
-                <Link href="/" className="flex items-center gap-2 ">
-                  <Image
-                    src={Logo}
-                    width={90}
-                    height={90}
-                    alt="Unibui Company Logo"
-                  />
-                  <span className="mt-1 p-3 text-sm italic underline underline-offset-4">
-                    job board
-                  </span>
-                </Link>
-
-                <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-2">
-                  <Link href="#" className="hover:underline underline-offset-4">
-                    Browse Jobs
-                  </Link>
-                  <Link href="/" className="hover:underline underline-offset-4">
-                    Post a Job
-                  </Link>
-                  <Link href="#" className="hover:underline underline-offset-4">
-                    Employers
-                  </Link>
-                  <Link href="#" className="hover:underline underline-offset-4">
-                    About
-                  </Link>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 text-muted-foreground">
-                <Link href="#" className="hover:underline underline-offset-4">
-                  Privacy Policy
-                </Link>
-                <Link href="#" className="hover:underline underline-offset-4">
-                  Terms of Service
-                </Link>
-                <div>&copy; 2024 Unibui. All rights reserved.</div>
-              </div>
-            </div>
-          </footer>
+          <Navbar />
+          <div className="flex-1">{children}</div>
         </div>
+        <Footer />
       </body>
     </html>
   );

@@ -2,26 +2,10 @@
 
 import type { Job } from "@/lib/get-job-postings";
 import { ChangeEvent, useEffect, useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SearchMenu } from "@/components/search-menu";
-import {
-  MagnifyingGlassIcon,
-  BookmarkFilledIcon,
-  BookmarkIcon,
-  LightningBoltIcon,
-} from "@radix-ui/react-icons";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { JobCard } from "./job-card";
+import SearchFilter from "./search-filter";
 
 export function JobBoardComponent({ jobs }: { jobs: Job[] }) {
   const [savedJobs, setSavedJobs] = useState<Set<string>>(() => {
@@ -99,94 +83,20 @@ export function JobBoardComponent({ jobs }: { jobs: Job[] }) {
           <SearchMenu />
           <main className="flex-1 py-8 ">
             <div className="max-w-3xl ">
-              <form className="bg-background border rounded-sm p-1 flex items-center gap-4 mb-8">
-                <MagnifyingGlassIcon className="w-5 h-5 ml-1" />
-                <Input
-                  type="search"
-                  placeholder="Filter job title, company, location..."
-                  className="flex-1 border-none focus:ring-0"
-                  value={filterInput}
-                  onChange={(e) => handleUserInput(e)}
-                />
-                {filterInput && (
-                  <Button onClick={() => setFilterInput("")} variant="outline">
-                    Clear filter
-                  </Button>
-                )}
-              </form>
+              <SearchFilter
+                filterInput={filterInput}
+                setFilterInput={setFilterInput}
+                handleUserInput={handleUserInput}
+              />
               <div className="grid gap-8">
                 {filteredJobs.map((job) => (
-                  <Card key={job.id}>
-                    <Link href={`/job/${job.id}`}>
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Avatar>
-                              <AvatarImage src="https://avatar.vercel.sh/1" />
-                              {/* vercel, nextjs, 1*/}
-                              <AvatarFallback>Company</AvatarFallback>
-                            </Avatar>
-
-                            <div>
-                              <div className="font-medium">
-                                {job.company_name}
-                              </div>
-                              <div className="text-sm text-muted-foreground">
-                                {job.location}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex flex-col gap-2">
-                          <h3 className="text-md font-semibold">
-                            {job.job_title}
-                          </h3>
-                          <p className="text-sm text-muted-foreground line-clamp-2">
-                            {job.job_description}
-                          </p>
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <div>$120k - $150k</div>
-                            <Separator
-                              orientation="vertical"
-                              className="hidden sm:inline-flex"
-                            />
-                            <div>3+ years experience</div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Link>
-
-                    <CardFooter className="gap-3 px-6">
-                      <Button className="w-full flex items-center justify-center">
-                        <LightningBoltIcon className="mr-2 h-4 w-4" />
-                        Fast Apply
-                      </Button>
-                      {isSaved(job.id) ? (
-                        <Button
-                          variant="outline"
-                          className="w-full "
-                          onClick={() => handleUnsaveJob(job.id)}
-                        >
-                          <BookmarkFilledIcon
-                            color="blue"
-                            className="mr-2 h-4 w-4"
-                          />
-                          Saved
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          className="w-full "
-                          onClick={() => handleSaveJob(job)}
-                        >
-                          <BookmarkIcon className="mr-2 h-4 w-4" />
-                          Save Job
-                        </Button>
-                      )}
-                    </CardFooter>
-                  </Card>
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                    isSaved={isSaved}
+                    handleSaveJob={handleSaveJob}
+                    handleUnsaveJob={handleUnsaveJob}
+                  />
                 ))}
               </div>
             </div>
@@ -200,75 +110,13 @@ export function JobBoardComponent({ jobs }: { jobs: Job[] }) {
                 jobs
                   .filter((job) => isSaved(job.id))
                   .map((job) => (
-                    <Card key={job.id}>
-                      <Link href={`/job/${job.id}`}>
-                        <CardHeader>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Avatar>
-                                <AvatarImage src="https://avatar.vercel.sh/1" />
-                                {/* vercel, nextjs, 1*/}
-                                <AvatarFallback>Company</AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <div className="font-medium">
-                                  {job.company_name}
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                  {job.location}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex flex-col gap-2">
-                            <h3 className="text-md font-semibold">
-                              {job.job_title}
-                            </h3>
-                            <p className="text-sm text-muted-foreground line-clamp-2">
-                              {job.job_description}
-                            </p>
-                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                              <div>$120k - $150k</div>
-                              <Separator
-                                orientation="vertical"
-                                className="hidden sm:inline-flex"
-                              />
-                              <div>3+ years experience</div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Link>
-                      <CardFooter className="gap-3 px-6">
-                        <Button className="w-full flex items-center justify-center">
-                          <LightningBoltIcon className="mr-2 h-4 w-4" />
-                          Fast Apply
-                        </Button>
-                        {isSaved(job.id) ? (
-                          <Button
-                            variant="outline"
-                            className="w-full"
-                            onClick={() => handleUnsaveJob(job.id)}
-                          >
-                            <BookmarkFilledIcon
-                              color="blue"
-                              className="mr-2 h-4 w-4"
-                            />
-                            Saved
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="outline"
-                            className="w-full"
-                            onClick={() => handleSaveJob(job)}
-                          >
-                            <BookmarkIcon className="mr-2 h-4 w-4" />
-                            Save Job
-                          </Button>
-                        )}
-                      </CardFooter>
-                    </Card>
+                    <JobCard
+                      key={job.id}
+                      job={job}
+                      isSaved={isSaved}
+                      handleSaveJob={handleSaveJob}
+                      handleUnsaveJob={handleUnsaveJob}
+                    />
                   ))
               ) : (
                 <p>You haven’t saved any fast apply jobs yet.</p>
